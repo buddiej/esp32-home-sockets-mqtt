@@ -56,6 +56,7 @@
 #define PWM_LED_ALIVE_RESOLUTION 8
 
 #define PIN_WIRELESS433_SEND     26
+#define PIN_WIRELESS433_RECEIVE  2
 
 /*****************************************************************************************/
 /*                                     TYPEDEF ENUM                                      */
@@ -73,6 +74,7 @@
 /* create an instance of WiFiClientSecure */
 WiFiClient espClient;
 PubSubClient client(espClient);
+
 
 RCSwitch mySwitch = RCSwitch();
 
@@ -164,7 +166,9 @@ void setup()
   Serial.println("Starting ...");
   Serial.println(" ");
 
-  mySwitch.enableTransmit(PIN_WIRELESS433_SEND); 
+  mySwitch.enableTransmit(PIN_WIRELESS433_SEND);
+  mySwitch.enableReceive(PIN_WIRELESS433_RECEIVE);
+   
 
   // We start by connecting to a WiFi network
   Serial.println();
@@ -248,7 +252,6 @@ void loop()
     /* We use the function ByIndex, and as an example get the temperature from the first sensor only. */
     Serial.print("Temperature DS18B20: ");
     Serial.println(sensors.getTempCByIndex(0));  
-    Serial.println("Test...");
 
     if((loop_5sec_counter % 2) == 0)
     {
@@ -273,6 +276,11 @@ void loop()
     json.toCharArray(data, (json.length() + 1));
     client.publish(TOPIC_SOCKET_1_CHANNEL_1_GET_ON, data, false);
 
+  }
+
+    if (mySwitch.available()) {
+    output(mySwitch.getReceivedValue(), mySwitch.getReceivedBitlength(), mySwitch.getReceivedDelay(), mySwitch.getReceivedRawdata(),mySwitch.getReceivedProtocol());
+    mySwitch.resetAvailable();
   }
 
 }
