@@ -3,6 +3,7 @@ with home sockets mqtt it is possible to work with wireless 433 MHz sensors e.g.
 # Details
 
 # Socket 1
+mySwitch.setPulseLength(200)
 # Socket 1 CH 1 ON
 17:11:31.324 -> Decimal: 15 (24Bit) Binary: 000000000000000000001111 Tri-State: 000000000011 PulseLength: 198 microseconds Protocol: 1
 17:11:31.416 -> Raw data: 6182,280,548,280,550,278,550,266,563,266,563,266,563,265,569,260,569,259,570,259,570,256,573,256,573,256,573,256,575,255,574,254,574,255,575,254,575,254,575,254,574,655,164,661,165,660,167,659,162,
@@ -75,6 +76,7 @@ with home sockets mqtt it is possible to work with wireless 433 MHz sensors e.g.
 17:11:58.306 -> 
 
 # Socket 2
+mySwitch.setPulseLength(294)
 # Socket 2 CH 1 ON / OFF
 000000000000000000001000
 # Socket 2 CH 2 ON / OFF
