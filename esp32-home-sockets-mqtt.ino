@@ -32,11 +32,17 @@
 #define TOPIC_SOCKET_1_CHANNEL_2_SET_ON      "wz/socket_1/channel_2/set/on"
 #define TOPIC_SOCKET_1_CHANNEL_3_SET_ON      "wz/socket_1/channel_3/set/on"
 #define TOPIC_SOCKET_1_CHANNEL_4_SET_ON      "wz/socket_1/channel_4/set/on"
+#define TOPIC_SOCKET_1_ALL_SET_ON            "wz/socket_1/all/set/on"
 
 #define TOPIC_SOCKET_2_CHANNEL_1_SET_ON      "wz/socket_2/channel_1/set/on"
 #define TOPIC_SOCKET_2_CHANNEL_2_SET_ON      "wz/socket_2/channel_2/set/on"
 #define TOPIC_SOCKET_2_CHANNEL_3_SET_ON      "wz/socket_2/channel_3/set/on"
 #define TOPIC_SOCKET_2_CHANNEL_4_SET_ON      "wz/socket_2/channel_4/set/on"
+
+#define TOPIC_SOCKET_3_CHANNEL_1_SET_ON      "wz/socket_3/channel_1/set/on"
+#define TOPIC_SOCKET_3_CHANNEL_2_SET_ON      "wz/socket_3/channel_2/set/on"
+#define TOPIC_SOCKET_3_CHANNEL_3_SET_ON      "wz/socket_3/channel_3/set/on"
+#define TOPIC_SOCKET_3_CHANNEL_4_SET_ON      "wz/socket_3/channel_4/set/on"
 
 /* Send topics */
 #define TOPIC_SOCKET_1_CHANNEL_1_GET_ON      "wz/socket_1/temperature/get/on"
@@ -315,7 +321,8 @@ void receivedCallback(char* topic, byte* payload, unsigned int length)
   /********************      HANDLING OF Received MQTT TOPICS WITH JASON     ******************/ 
   /********************************************************************************************/
   
-  /*+++++++++++++++++++++++++++++ Set control +++++++++++++++++++++++++++++++++++++++*/ 
+  /*+++++++++++++++++++++++++++++ Set control +++++++++++++++++++++++++++++++++++++++*/
+  /* socket 1 */
   if(strcmp(topic, TOPIC_SOCKET_1_CHANNEL_1_SET_ON)==0)
   {
     if(root.containsKey("status")) 
@@ -396,6 +403,27 @@ void receivedCallback(char* topic, byte* payload, unsigned int length)
       }
     }
   }
+  if(strcmp(topic, TOPIC_SOCKET_1_ALL_SET_ON)==0)
+  {
+    if(root.containsKey("status")) 
+    {
+      Loc_Status = root["status"];
+      Serial.print("status socket 1 all set: ");
+     
+      Serial.println(Loc_Status, DEC);
+      mySwitch.setPulseLength(200);
+      delay(10);
+      if(Loc_Status == 1)
+      {
+          mySwitch.send("000000000000000000001101");
+      }
+      else
+      {
+         mySwitch.send("000000000000000000001100");
+      }
+    }
+  }
+  /* socket 2 */
   if(strcmp(topic, TOPIC_SOCKET_2_CHANNEL_1_SET_ON)==0)
   {
     if(root.containsKey("status")) 
@@ -460,9 +488,86 @@ void receivedCallback(char* topic, byte* payload, unsigned int length)
       }
     }
   }
-
-
-
+  if(strcmp(topic, TOPIC_SOCKET_3_CHANNEL_1_SET_ON)==0)
+  {
+    if(root.containsKey("status")) 
+    {
+      Loc_Status = root["status"];
+      Serial.print("status socket 3 channel 1 set: ");
+     
+      Serial.println(Loc_Status, DEC);
+      mySwitch.setPulseLength(530);
+      delay(10);
+      if(Loc_Status == 1)
+      {
+          mySwitch.send("101100111101100001101100");
+      }
+      else
+      {
+         mySwitch.send("101110011011100101111100");
+      }
+    }
+  }
+  if(strcmp(topic, TOPIC_SOCKET_3_CHANNEL_2_SET_ON)==0)
+  {
+    if(root.containsKey("status")) 
+    {
+      Loc_Status = root["status"];
+      Serial.print("status socket 3 channel 2 set: ");
+     
+      Serial.println(Loc_Status, DEC);
+      mySwitch.setPulseLength(530);
+      delay(10);
+      if(Loc_Status == 1)
+      {
+          mySwitch.send("101101010100010011110101");
+      }
+      else
+      {
+         mySwitch.send("101100010000111010010101");
+      }
+    }
+  }
+  if(strcmp(topic, TOPIC_SOCKET_3_CHANNEL_3_SET_ON)==0)
+  {
+    if(root.containsKey("status")) 
+    {
+      Loc_Status = root["status"];
+      Serial.print("status socket 3 channel 3 set: ");
+     
+      Serial.println(Loc_Status, DEC);
+      mySwitch.setPulseLength(530);
+      delay(10);
+      if(Loc_Status == 1)
+      {
+          mySwitch.send("101110011011100101111110");
+      }
+      else
+      {
+         mySwitch.send("101110111110001010101110");
+      }
+    }
+  }
+  if(strcmp(topic, TOPIC_SOCKET_3_CHANNEL_4_SET_ON)==0)
+  {
+    if(root.containsKey("status")) 
+    {
+      Loc_Status = root["status"];
+      Serial.print("status socket 3 channel 4 set: ");
+     
+      Serial.println(Loc_Status, DEC);
+      mySwitch.setPulseLength(530);
+      delay(10);
+      if(Loc_Status == 1)
+      {
+          mySwitch.send("101110001010111111010111");
+      }
+      else
+      {
+         mySwitch.send("101111011111011000000111");
+      }
+    }
+  }
 }
 
 
@@ -488,10 +593,15 @@ void mqttconnect(void)
       client.subscribe(TOPIC_SOCKET_1_CHANNEL_2_SET_ON);
       client.subscribe(TOPIC_SOCKET_1_CHANNEL_3_SET_ON);
       client.subscribe(TOPIC_SOCKET_1_CHANNEL_4_SET_ON);
+      client.subscribe(TOPIC_SOCKET_1_ALL_SET_ON);
       client.subscribe(TOPIC_SOCKET_2_CHANNEL_1_SET_ON);
       client.subscribe(TOPIC_SOCKET_2_CHANNEL_2_SET_ON);
       client.subscribe(TOPIC_SOCKET_2_CHANNEL_3_SET_ON);
       client.subscribe(TOPIC_SOCKET_2_CHANNEL_4_SET_ON);
+      client.subscribe(TOPIC_SOCKET_3_CHANNEL_1_SET_ON);
+      client.subscribe(TOPIC_SOCKET_3_CHANNEL_2_SET_ON);
+      client.subscribe(TOPIC_SOCKET_3_CHANNEL_3_SET_ON);
+      client.subscribe(TOPIC_SOCKET_3_CHANNEL_4_SET_ON);
       
     } 
     else 
